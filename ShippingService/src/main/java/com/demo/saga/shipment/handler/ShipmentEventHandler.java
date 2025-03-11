@@ -3,7 +3,7 @@ package com.demo.saga.shipment.handler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.demo.saga.core.events.CompleteShipEvent;
+import com.demo.saga.core.events.shipment.CompleteShipEvent;
 import com.demo.saga.core.models.Shipment;
 import com.demo.saga.shipment.repository.ShipmentRepository;
 

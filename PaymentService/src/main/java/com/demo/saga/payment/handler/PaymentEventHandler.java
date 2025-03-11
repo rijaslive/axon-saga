@@ -3,8 +3,8 @@ package com.demo.saga.payment.handler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.demo.saga.core.events.CancelPaymentEvent;
-import com.demo.saga.core.events.CompletePaymentEvent;
+import com.demo.saga.core.events.payment.CancelPaymentEvent;
+import com.demo.saga.core.events.payment.CompletePaymentEvent;
 import com.demo.saga.core.models.Payment;
 import com.demo.saga.payment.repository.PaymentRepository;
 

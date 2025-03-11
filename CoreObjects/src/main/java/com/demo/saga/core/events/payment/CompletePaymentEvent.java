@@ -1,15 +1,15 @@
-package com.demo.saga.core.events;
+package com.demo.saga.core.events.payment;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class CompleteShipEvent {
-    private String shipmentId;
+public class CompletePaymentEvent {
     private String paymentId;
     private String orderId;
     private String userId;
-    private String shipmentStatus;
+    private String price;
+    private String paymentStatus;
     private String comment;
 }

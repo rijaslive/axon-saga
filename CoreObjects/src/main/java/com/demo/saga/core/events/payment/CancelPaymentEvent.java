@@ -1,16 +1,15 @@
-package com.demo.saga.core.events;
+package com.demo.saga.core.events.payment;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class OrderCreateEvent {
+public class CancelPaymentEvent {
+    private String paymentId;
     private String orderId;
-    private String productId;
     private String userId;
-    private String quantity;
     private String price;
-    private String orderStatus;
+    private String paymentStatus;
     private String comment;
 }

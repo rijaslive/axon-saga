@@ -1,4 +1,4 @@
-package com.demo.saga.core.commands;
+package com.demo.saga.core.commands.shipment;
 
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 import com.demo.saga.core.models.ServiceTypes;
@@ -7,12 +7,12 @@ import lombok.Value;
 
 @Value
 @Builder
-public class CompletePaymentCommand {
+public class CompleteShipCommand {
 
     @TargetAggregateIdentifier
-    private final String paymentId;
+    private final String shipmentId;
     private String orderId;
     private String userId;
-    private String price;
-    private String paymentStatus = ServiceTypes.PAYMENT_STATUS.COMPLETE.toString();
+    private String paymentId;
+    private String shipmentStatus = ServiceTypes.SHIP_STATUS.COMPLETE.toString();
 }

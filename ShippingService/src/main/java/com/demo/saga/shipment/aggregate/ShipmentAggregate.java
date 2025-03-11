@@ -5,8 +5,8 @@ import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
-import com.demo.saga.core.commands.CompleteShipCommand;
-import com.demo.saga.core.events.CompleteShipEvent;
+import com.demo.saga.core.commands.shipment.CompleteShipCommand;
+import com.demo.saga.core.events.shipment.CompleteShipEvent;
 import com.demo.saga.shipment.handler.ShipmentEventHandler;
 
 @Aggregate

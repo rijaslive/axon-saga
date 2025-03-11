@@ -1,4 +1,4 @@
-package com.demo.saga.core.commands;
+package com.demo.saga.core.commands.order;
 
 import com.demo.saga.core.models.ServiceTypes;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;

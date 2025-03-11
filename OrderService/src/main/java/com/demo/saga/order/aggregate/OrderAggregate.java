@@ -6,12 +6,12 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 
-import com.demo.saga.core.commands.CancelOrderCommand;
-import com.demo.saga.core.commands.CompleteOrderCommand;
-import com.demo.saga.core.commands.CreateOrderCommand;
-import com.demo.saga.core.events.CancelOrderEvent;
-import com.demo.saga.core.events.CompleteOrderEvent;
-import com.demo.saga.core.events.OrderCreateEvent;
+import com.demo.saga.core.commands.order.CancelOrderCommand;
+import com.demo.saga.core.commands.order.CompleteOrderCommand;
+import com.demo.saga.core.commands.order.CreateOrderCommand;
+import com.demo.saga.core.events.order.CancelOrderEvent;
+import com.demo.saga.core.events.order.CompleteOrderEvent;
+import com.demo.saga.core.events.order.OrderCreateEvent;
 import com.demo.saga.order.handler.OrderEventsHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,8 +21,6 @@ public class OrderAggregate {
     @AggregateIdentifier
     private String orderId;
 
-    @Autowired
-    private OrderEventsHandler orderEventsHandler;
 
     public OrderAggregate() {
     }
@@ -62,20 +60,21 @@ public class OrderAggregate {
     }
 
     @EventSourcingHandler
-    public void on(CompleteOrderEvent event) {
+    public void on(OrderCreateEvent event, OrderEventsHandler orderEventsHandler) {
+        this.orderId = event.getOrderId();
+        orderEventsHandler.onOrderCreateEvent(event);
+    }
+
+    @EventSourcingHandler
+    public void on(CompleteOrderEvent event, OrderEventsHandler orderEventsHandler) {
         this.orderId = event.getOrderId();
         orderEventsHandler.onCompleteOrderEvent(event);
     }
 
     @EventSourcingHandler
-    public void on(CancelOrderEvent event) {
+    public void on(CancelOrderEvent event, OrderEventsHandler orderEventsHandler) {
         this.orderId = event.getOrderId();
         orderEventsHandler.onCancelOrderEvent(event);
     }
 
-    @EventSourcingHandler
-    public void on(OrderCreateEvent event) {
-        this.orderId = event.getOrderId();
-        orderEventsHandler.onOrderCreateEvent(event);
-    }
 }

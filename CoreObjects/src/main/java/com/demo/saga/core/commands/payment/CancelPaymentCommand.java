@@ -1,4 +1,4 @@
-package com.demo.saga.core.commands;
+package com.demo.saga.core.commands.payment;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 import com.demo.saga.core.models.ServiceTypes;
 import lombok.Builder;

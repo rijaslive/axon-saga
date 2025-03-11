@@ -1,4 +1,4 @@
-package com.demo.saga.core.commands;
+package com.demo.saga.core.commands.order;
 
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 import lombok.Builder;

@@ -3,9 +3,9 @@ package com.demo.saga.order.handler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.demo.saga.core.events.CancelOrderEvent;
-import com.demo.saga.core.events.CompleteOrderEvent;
-import com.demo.saga.core.events.OrderCreateEvent;
+import com.demo.saga.core.events.order.CancelOrderEvent;
+import com.demo.saga.core.events.order.CompleteOrderEvent;
+import com.demo.saga.core.events.order.OrderCreateEvent;
 import com.demo.saga.core.models.Order;
 import com.demo.saga.order.repository.OrderRepository;
 

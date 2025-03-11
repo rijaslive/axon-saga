@@ -1,8 +1,12 @@
 package com.demo.saga.order.saga;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.deadline.DeadlineManager;
+import org.axonframework.deadline.annotation.DeadlineHandler;
 import org.axonframework.modelling.saga.EndSaga;
 import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.modelling.saga.SagaLifecycle;
@@ -10,20 +14,21 @@ import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.spring.stereotype.Saga;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.demo.saga.core.commands.CancelOrderCommand;
-import com.demo.saga.core.commands.CancelPaymentCommand;
-import com.demo.saga.core.commands.CompleteOrderCommand;
-import com.demo.saga.core.commands.CompletePaymentCommand;
-import com.demo.saga.core.commands.CompleteShipCommand;
-import com.demo.saga.core.events.CancelOrderEvent;
-import com.demo.saga.core.events.CancelPaymentEvent;
-import com.demo.saga.core.events.CompleteOrderEvent;
-import com.demo.saga.core.events.CompletePaymentEvent;
-import com.demo.saga.core.events.CompleteShipEvent;
-import com.demo.saga.core.events.OrderCreateEvent;
+import com.demo.saga.core.commands.order.CancelOrderCommand;
+import com.demo.saga.core.commands.payment.CancelPaymentCommand;
+import com.demo.saga.core.commands.order.CompleteOrderCommand;
+import com.demo.saga.core.commands.payment.CompletePaymentCommand;
+import com.demo.saga.core.commands.shipment.CompleteShipCommand;
+import com.demo.saga.core.events.order.CancelOrderEvent;
+import com.demo.saga.core.events.payment.CancelPaymentEvent;
+import com.demo.saga.core.events.order.CompleteOrderEvent;
+import com.demo.saga.core.events.payment.CompletePaymentEvent;
+import com.demo.saga.core.events.shipment.CompleteShipEvent;
+import com.demo.saga.core.events.order.OrderCreateEvent;
 
 @Saga
 public class OrderSystemSaga {
+
 
     @Autowired
     private transient CommandGateway commandGateway;
@@ -32,7 +37,7 @@ public class OrderSystemSaga {
 
     @StartSaga
     @SagaEventHandler(associationProperty = "orderId")
-    private void handle(OrderCreateEvent event) {
+    private void handle(OrderCreateEvent event, DeadlineManager deadlineManager) {
 
         //CreateOrderCommand triggered the OrderCreateEvent
         //Now we can create the next transaction step which is payment COMMAND
@@ -80,6 +85,7 @@ public class OrderSystemSaga {
         CancelOrderCommand command = CancelOrderCommand.builder()
                 .orderId(orderId).build();
         commandGateway.send(command);
+        SagaLifecycle.end();
     }
 
     //Cancel Payment Command
@@ -125,4 +131,6 @@ public class OrderSystemSaga {
         //Handle Event if necessary
         System.out.println("Order Cancelled");
     }
+
+
 }

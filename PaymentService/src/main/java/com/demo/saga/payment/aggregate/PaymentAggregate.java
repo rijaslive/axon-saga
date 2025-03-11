@@ -6,10 +6,10 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 
-import com.demo.saga.core.commands.CancelPaymentCommand;
-import com.demo.saga.core.commands.CompletePaymentCommand;
-import com.demo.saga.core.events.CancelPaymentEvent;
-import com.demo.saga.core.events.CompletePaymentEvent;
+import com.demo.saga.core.commands.payment.CancelPaymentCommand;
+import com.demo.saga.core.commands.payment.CompletePaymentCommand;
+import com.demo.saga.core.events.payment.CancelPaymentEvent;
+import com.demo.saga.core.events.payment.CompletePaymentEvent;
 import com.demo.saga.payment.handler.PaymentEventHandler;
 
 @Aggregate

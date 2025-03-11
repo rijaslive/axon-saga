@@ -4,7 +4,7 @@ import java.util.UUID;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.demo.saga.core.commands.CreateOrderCommand;
+import com.demo.saga.core.commands.order.CreateOrderCommand;
 import com.demo.saga.core.models.OrderObject;
 import com.demo.saga.core.models.ServiceTypes;
 
