@@ -3,6 +3,7 @@ package com.demo.saga.order.saga;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.deadline.DeadlineManager;
@@ -29,15 +30,22 @@ import com.demo.saga.core.events.order.OrderCreateEvent;
 @Saga
 public class OrderSystemSaga {
 
+    private static final String PAYMENT_DEADLINE = "payment-deadline";
+    private static final Duration PAYMENT_TIMEOUT = Duration.of(10, ChronoUnit.SECONDS);
+
 
     @Autowired
     private transient CommandGateway commandGateway;
+
+    @Autowired
+    private transient DeadlineManager deadlineManager;
+
 
     public OrderSystemSaga() {}
 
     @StartSaga
     @SagaEventHandler(associationProperty = "orderId")
-    private void handle(OrderCreateEvent event, DeadlineManager deadlineManager) {
+    private void handle(OrderCreateEvent event) {
 
         //CreateOrderCommand triggered the OrderCreateEvent
         //Now we can create the next transaction step which is payment COMMAND
@@ -56,8 +64,27 @@ public class OrderSystemSaga {
                 .price(event.getPrice())
                 .userId(event.getUserId())
                 .build();
-        commandGateway.send(command);
+
+        deadlineManager.schedule(PAYMENT_TIMEOUT, PAYMENT_DEADLINE, event.getOrderId());
+        try {
+            commandGateway.sendAndWait(command, 10, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            // Log the exception
+            System.out.println("Payment service unavailable: " + e.getMessage());
+            // Cancel the order directly
+            cancelOrderCommand(event.getOrderId());
+        }
     }
+
+
+    // Deadline handler for payment timeout
+    @DeadlineHandler(deadlineName = PAYMENT_DEADLINE)
+    public void handlePaymentDeadline(String orderId) {
+        System.out.println("Payment deadline exceeded for order: " + orderId);
+        cancelOrderCommand(orderId);
+    }
+
+
 
     @SagaEventHandler(associationProperty = "paymentId")
     private void handle(CompletePaymentEvent event) {

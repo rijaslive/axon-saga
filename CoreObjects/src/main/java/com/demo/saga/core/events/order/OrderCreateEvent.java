@@ -3,6 +3,8 @@ package com.demo.saga.core.events.order;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 public class OrderCreateEvent {
@@ -13,4 +15,5 @@ public class OrderCreateEvent {
     private String price;
     private String orderStatus;
     private String comment;
+    private LocalDateTime dateTime;
 }
