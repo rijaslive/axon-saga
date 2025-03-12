@@ -1,5 +1,7 @@
 package com.demo.saga.order.aggregate;
 
+import com.demo.saga.core.commands.order.CancelOrderCommand;
+import com.demo.saga.core.commands.order.CompleteOrderCommand;
 import com.demo.saga.core.commands.order.CreateOrderCommand;
 import com.demo.saga.core.events.order.CancelOrderEvent;
 import com.demo.saga.core.events.order.CompleteOrderEvent;
@@ -37,6 +39,28 @@ public class OrderAggregate {
     }
 
     // Other command handlers...
+
+
+    @CommandHandler
+    public void handle(CompleteOrderCommand completeOrderCommand) {
+        //Publish the Order Completed Event
+        CompleteOrderEvent event = CompleteOrderEvent.builder()
+                .orderId(completeOrderCommand.getOrderId())
+                .orderStatus(completeOrderCommand.getOrderStatus())
+                .build();
+        AggregateLifecycle.apply(event);
+    }
+
+    @CommandHandler
+    public void handle(CancelOrderCommand cancelOrderCommand) {
+        //Publish the Order Cancel Event
+        CancelOrderEvent event = CancelOrderEvent.builder()
+                .orderId(cancelOrderCommand.getOrderId())
+                .orderStatus("Cancelled")
+                .build();
+        AggregateLifecycle.apply(event);
+    }
+
 
     @EventSourcingHandler
     public void on(OrderCreateEvent event) {
